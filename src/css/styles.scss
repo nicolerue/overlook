@@ -1,11 +1,260 @@
-h1 {
-  color: red;
+//VARIABLES
 
+$main-font: "Inter", sans-serif;
+$main-color-dark: #262626;
+$main-color-light: #d4d4d8;
+$burnt-orange: #ce7e00;
+$green: #274e13;
+$purple: #ab8dc8;
+$radius: 45px;
+$circumference: 2 * 3.14159 * $radius;
+
+// MIXINS
+@mixin calculateStrokeDashArray($percentage) {
+  $dashLength: $circumference * $percentage;
+  $gapLength: $circumference - $dashLength;
+  stroke-dasharray: $dashLength $gapLength;
+}
+
+@mixin style-main-font-dark() {
+  color: $main-color-dark;
+  font-family: $main-font;
+}
+
+@mixin style-main-font-light() {
+  color: $main-color-light;
+  font-family: $main-font;
+}
+
+@mixin flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin align-justify-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin border-light() {
+  border: 1px solid $main-color-light;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@mixin timer-text() {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+}
+
+@mixin timer-stroke() {
+  stroke-width: 7px;
+  stroke-linecap: round;
+}
+
+@mixin timer-base() {
+  fill: none;
+  stroke: none;
+}
+
+@mixin barwidth($height) {
+  height: #{$height}px;
+  width: 10px;
+  background-color: $main-color-dark;
+}
+
+@mixin hover-basic() {
+  cursor: pointer;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+// ELEMENTS
+* {
+  margin: 0;
+  padding: 0;
+  font-family: $main-font;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.page-container {
+  height: 100vh;
+  @include flex-column;
+  @include align-justify-center();
+  gap: 50px;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.home-login {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 20px;
+}
+
+.input-login,
+.search-customer {
+  height: 30px;
+  width: 250px;
+}
+
+input[type="text"] {
+  font-size: 22px;
+}
+
+.secondary-font {
+  font-size: 32px;
+}
+
+.select-action {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 30px;
+}
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  background-color: $main-color-light;
+  color: $main-color-dark;
+  margin: 20px 20px;
   &:hover {
-    color: blue;
+    @include hover-basic();
   }
 }
 
-body {
-  background-color: red;
+.section-container {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 30px;
+}
+
+.bookings-container {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 20px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+  cursor: pointer;
+}
+.date-input {
+  height: 30px;
+  width: 200px;
+  font-size: 24px;
+  &:hover {
+    @include hover-basic();
+  }
+  cursor: pointer;
+}
+
+.rooms-display,
+.bookings-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  row-gap: 50px;
+}
+
+.room-card,
+.booking-card {
+  @include border-light();
+}
+
+.select-action-manager {
+  @include flex-column();
+  @include align-justify-center();
+  gap: 30px;
+}
+
+.search-label-input-container {
+  @include align-justify-center();
+  font-size: 24px;
+}
+
+/* Sets the containers height and width */
+.base-timer {
+  position: relative;
+  height: 250px;
+  width: 250px;
+}
+
+.timer-label-container {
+  @include flex-column();
+  @include align-justify-center();
+  gap: 25px;
+}
+
+/* Removes SVG styling that would hide the time label */
+.base-timer__circle {
+  @include timer-base();
+  fill: rgb(245, 245, 245, 50%);
+}
+
+/* The SVG path that displays the timer's progress */
+.base-timer__path-elapsed1 {
+  stroke: $burnt-orange;
+  @include calculateStrokeDashArray(0.33);
+  @include timer-stroke();
+}
+
+.base-timer__path-elapsed2 {
+  stroke: $green;
+  @include calculateStrokeDashArray(0.12);
+
+  @include timer-stroke();
+}
+
+.base-timer__path-elapsed3 {
+  stroke: $purple;
+
+  @include calculateStrokeDashArray(0.55);
+  @include timer-stroke();
+}
+.base-timer__label {
+  @include timer-text();
+  @include align-justify-center();
+  @include flex-column();
+}
+
+.occupied-percent {
+  font-size: 42px;
+}
+
+.percent-label {
+  display: flex;
+  background-color: $main-color-light;
+  color: $main-color-dark;
+  padding: 10px 20px;
+  border-radius: 15px;
+}
+
+.circle-label-container {
+  @include flex-column();
+  @include align-justify-center;
+  gap: 30px;
 }
