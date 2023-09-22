@@ -184,7 +184,7 @@ export function displayManagerStatsPage() {
             <p class="occupied-percent">33%</p>
           </class>
         </div>
-        <div class="percent-label">Percentage of Rooms Occupied Today</div>
+        <div class="percent-label">Percentage of Rooms Occupied for Selected Date</div>
       </div>
       <h2 class="manager-revenue">Today's Total Revenue: $1200</h2>
       <h2 class="avail-rooms">Today's Available Rooms: 14</h2>
