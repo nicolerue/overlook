@@ -98,7 +98,7 @@ export function customerTotalCost(customerObj, bookingsArr, roomsArr) {
         acc += roomMatch.costPerNight;
       }
     }
-    return acc;
+    return Math.round(acc);
   }, 0);
 }
 

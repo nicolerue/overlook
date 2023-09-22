@@ -76,7 +76,7 @@ describe("return the total cost a customer has spent", function () {
     const customerObj = { id: 9, name: "Nicole Rue" };
     const result = customerTotalCost(customerObj, bookings, rooms);
 
-    expect(result).to.equal(491.14);
+    expect(result).to.equal(491);
   });
 });
 
@@ -130,9 +130,7 @@ describe("Return available rooms based on the room type chosen by the customer",
       },
     ];
     const result = filterAvailRooms(availableRooms, "single room");
-    expect(result).to.equal(
-      `Sorry there are no available rooms with your selected room type`
-    );
+    expect(result).to.deep.equal([]);
   });
 });
 
@@ -218,7 +216,7 @@ describe("View Total Amount the User has Spent", function () {
       },
     ];
     const result = viewUserBookingSpent(bookingsArr, rooms);
-    expect(result).to.equal(261.26);
+    expect(result).to.equal(261);
   });
 });
 

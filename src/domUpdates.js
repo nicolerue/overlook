@@ -58,7 +58,7 @@ export function displayManagerHomePage() {
     </div>
     
 
-      <button class="manager-view-bookings secondary-font">
+      <button class="hidden manager-view-bookings-btn secondary-font">
         VIEW STATS
       </button>
       <div class="search-label-input-container">

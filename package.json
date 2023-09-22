@@ -29,7 +29,5 @@
     "test": "mochapack 'test/**/*.js'",
     "lint": "./node_modules/.bin/eslint 'src/**.js' 'test/**.js'"
   },
-  "dependencies": {
-    "flatpickr": "^4.6.13"
-  }
+  "dependencies": {}
 }
