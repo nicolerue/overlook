@@ -1,8 +1,6 @@
 //IMPORTS
 import "./css/styles.scss";
 
-import flatpickr from "flatpickr";
-
 import {
   fetchAllCustomers,
   fetchAllRooms,
@@ -228,20 +226,6 @@ function filterByRoomType(e) {
     }
   }
 }
-
-// document.addEventListener("change", (event) => {
-//   if (event.target.classList.contains("currencies-dropdown")) {
-//     const selectedCurrencyId = event.target.value;
-//     const costSelected = returnRecipeCost(
-//       recipeData,
-//       ingredientsData,
-//       idClicked
-//     );
-//     const convertedCost = returnUpdatedCost(selectedCurrencyId, costSelected);
-//     modalCost.innerText = `Estimated Cost of Ingredients: ${convertedCost} ${selectedCurrencyId.toUpperCase()}`;
-//   }
-// });
-
 function customerViewAllBookings(e) {
   if (e.target.classList.contains("customer-all-bookings")) {
     const bookingsMessage = document.querySelector(".bookings-message");
@@ -319,8 +303,10 @@ function updateCustomerSpending() {
 function managerViewStats(e) {
   if (e.target.classList.contains("date-input-manager")) {
     const value = document.querySelector(".date-input-manager");
+    const viewStatsBtn = document.querySelector(".manager-view-bookings-btn");
     value.addEventListener("change", function () {
       const selectedDate = this.value;
+      viewStatsBtn.classList.remove("hidden");
       managerDate = selectedDate.replaceAll("-", "/");
       todayPercentage = totalPercentOccupied(
         managerDate,
@@ -331,7 +317,7 @@ function managerViewStats(e) {
   }
 
   if (
-    e.target.classList.contains("manager-view-bookings") &&
+    e.target.classList.contains("manager-view-bookings-btn") &&
     managerDate !== null
   ) {
     displayManagerStatsPage();
@@ -346,7 +332,7 @@ function updateManagerStats() {
 
   const percentageCircle = document.querySelector(".occupied-percent");
 
-  percentageCircle.innerText = `${todayPercentage}`;
+  percentageCircle.innerText = `${todayPercentage}%`;
   managerHeader.innerText = `MANAGER STATS - ${managerDate}`;
 
   updatePercentage(todayPercentage / 100);
