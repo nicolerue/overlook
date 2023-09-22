@@ -20,6 +20,8 @@ import {
   viewUserBookingSpent,
   getCustomerName,
   checkCustomerValid,
+  retrieveRoomObject,
+  retrieveBookingObject,
 } from "../src/functions";
 
 describe("See if the tests are running", function () {
@@ -247,5 +249,26 @@ describe("Check Manager's search to see if the customer name is in the data set"
   it("should return undefined if no customers are found with that name", function () {
     const result = checkCustomerValid(customers, "Harry Barry");
     expect(result).to.equal(undefined);
+  });
+});
+
+describe("Retrieve the object for a room based on an id", function () {
+  it("should return a single room object for any given id", function () {
+    const result = retrieveRoomObject(rooms, "12");
+    expect(result).to.deep.equal({
+      number: 12,
+      roomType: "residential suite",
+      bidet: true,
+      bedSize: "queen",
+      numBeds: 1,
+      costPerNight: 358.4,
+    });
+  });
+});
+
+describe("Retrieve a single bookings object", function () {
+  it("should return a single booking object for a given date and room number", function () {
+    const result = retrieveBookingObject(bookings, "2022/04/22", 3);
+    expect(result.id).to.equal = "5fwrgu4i7k55hl6sz";
   });
 });

@@ -5,6 +5,8 @@ import {
   fetchAllCustomers,
   fetchAllRooms,
   fetchAllBookings,
+  addNewBooking,
+  deleteBooking,
 } from "./api-calls";
 ("./api-calls");
 
@@ -41,6 +43,8 @@ import {
   viewUserBookings,
   viewUserBookingSpent,
   filterAvailRooms,
+  retrieveRoomObject,
+  retrieveBookingObject,
 } from "./functions";
 
 import "./images/turing-logo.png";
@@ -67,11 +71,6 @@ Promise.all([fetchAllCustomers, fetchAllRooms, fetchAllBookings]).then(
     dataAllCustomers = fetchAllCustomersResult;
     dataAllRooms = fetchAllRoomsResult;
     dataAllBookings = fetchAllBookingsResult;
-
-    console.log(dataAllCustomers);
-    console.log(dataAllRooms);
-    console.log(dataAllBookings);
-
     displayLoginPage();
     removeNavButtons();
   }
@@ -91,6 +90,8 @@ window.addEventListener("click", managerViewStats);
 window.addEventListener("keypress", managerViewCustomer);
 window.addEventListener("click", managerBookRoomForCustomer);
 window.addEventListener("change", filterByRoomType);
+window.addEventListener("click", customerBookRoom);
+window.addEventListener("click", managerDeleteBooking);
 
 //FUNCTIONS
 
@@ -398,5 +399,30 @@ function managerViewCustomer(e) {
 function managerBookRoomForCustomer(e) {
   if (e.target.classList.contains("manager-add-bookings")) {
     displayCustomerBookNewRoomPage(currentCustomer.name);
+  }
+}
+
+function customerBookRoom(e) {
+  if (e.target.classList.contains("book-btn")) {
+    const room = retrieveRoomObject(dataAllRooms, e.target.id);
+    addNewBooking(room, currentCustomer, customerDate);
+    e.target.innerText = `✓ Booked`;
+    e.target.style.backgroundColor = "#ce7e00";
+    e.target.style.color = "#FFFFFF";
+
+    fetch(`http://localhost:3001/api/v1/bookings`)
+      .then((res) => res.json())
+      .then((data) => {
+        dataAllBookings = data.bookings;
+      });
+  }
+}
+
+function managerDeleteBooking(e) {
+  if (e.target.classList.contains("delete-btn")) {
+    deleteBooking(e.target.id);
+    e.target.innerText = `DELETED`;
+    e.target.style.backgroundColor = "#ce7e00";
+    e.target.style.color = "#FFFFFF";
   }
 }

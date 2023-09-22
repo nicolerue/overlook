@@ -190,6 +190,8 @@ button,
 .room-card,
 .booking-card {
   @include border-light();
+  @include flex-column();
+  @include align-justify-center;
 }
 
 .select-action-manager {

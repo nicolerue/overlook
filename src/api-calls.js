@@ -16,10 +16,28 @@ export const fetchAllBookings = fetch(`http://localhost:3001/api/v1/bookings`)
     return data.bookings;
   });
 
-// export const fetchSingleCustomer = fetch(
-//   `http://localhost:3001/api/v1/customers/${id}`
-// )
-//   .then((res) => res.json())
-//   .then((data) => {
-//     console.log(data);
-//   });
+export const addNewBooking = function (roomObj, userObj, selectedDate) {
+  fetch("http://localhost:3001/api/v1/bookings", {
+    method: "POST",
+    body: JSON.stringify({
+      userID: userObj.id,
+      date: selectedDate,
+      roomNumber: roomObj.number,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((json) => console.log(json))
+    .catch((err) => console.log(err));
+};
+
+export const deleteBooking = function (id) {
+  fetch(`http://localhost:3001/api/v1/bookings/${id}`, {
+    method: "DELETE",
+  })
+    .then((response) => response.json())
+    .then((json) => console.log(json))
+    .catch((err) => console.log(err));
+};

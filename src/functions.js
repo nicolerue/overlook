@@ -233,3 +233,15 @@ export function checkCustomerValid(customerArr, customerName) {
     return undefined;
   }
 }
+
+export function retrieveRoomObject(roomsArr, id) {
+  return roomsArr.find((roomEl) => {
+    return roomEl.number === parseInt(id);
+  });
+}
+
+export function retrieveBookingObject(bookingsArr, date, roomNum) {
+  return bookingsArr.find((bookingEl) => {
+    return bookingEl.date === date && bookingEl.roomNumber === roomNum;
+  });
+}
