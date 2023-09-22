@@ -18,6 +18,13 @@ import {
   displayCustomerBookNewRoomPage,
   displayCustomerAvailableRooms,
   displayCustomerBookings,
+  displayManagerStatsPage,
+  displayManagerRevenue,
+  displayManagerAvailRooms,
+  displayManagerAvailRoomCards,
+  displayManageCustomerPage,
+  displayManagerCustomerStats,
+  displayManagerCustomerBookings,
 } from "./domUpdates";
 
 import {
@@ -28,6 +35,14 @@ import {
   customerBookingsAll,
   customerBookingsPast,
   customerBookingsUpcoming,
+  customerTotalCost,
+  totalPercentOccupied,
+  totalRevenueDay,
+  managerAvailableRoomsNum,
+  checkCustomerValid,
+  viewUserBookings,
+  viewUserBookingSpent,
+  filterAvailRooms,
 } from "./functions";
 
 import "./images/turing-logo.png";
@@ -43,6 +58,10 @@ let dataAllRooms = null;
 let dataAllBookings = null;
 let currentCustomer = {};
 let todayDate = getCurrentDate();
+let todayPercentage = null;
+let managerDate = null;
+let currentUser = null;
+let customerDate = null;
 // PAGE LOAD
 
 Promise.all([fetchAllCustomers, fetchAllRooms, fetchAllBookings]).then(
@@ -70,6 +89,10 @@ signoutBtn.addEventListener("click", signout);
 window.addEventListener("click", customerViewAllBookings);
 window.addEventListener("click", customerViewPastBookings);
 window.addEventListener("click", customerViewFutureBookings);
+window.addEventListener("click", managerViewStats);
+window.addEventListener("keypress", managerViewCustomer);
+window.addEventListener("click", managerBookRoomForCustomer);
+window.addEventListener("change", filterByRoomType);
 
 //FUNCTIONS
 
@@ -84,16 +107,15 @@ function removeNavButtons() {
 }
 
 function navigateHome() {
-  const header = document.querySelector(".header");
-  if (
-    header.innerText.includes("BOOKINGS") ||
-    header.innerText.includes("BOOK")
-  ) {
+  if (currentUser === "customer") {
     displayCustomerHomePage(currentCustomer.name.toUpperCase());
+  } else if (currentUser === "manager") {
+    displayManagerHomePage();
   }
 }
 
 function signout() {
+  currentUser = "";
   currentCustomer = {};
   displayLoginPage();
   removeNavButtons();
@@ -118,9 +140,11 @@ function login(e) {
       usernameInput.value = "";
       passwordInput.value = "";
     } else if (loginCheck === `valid manager login`) {
+      currentUser = "manager";
       displayManagerHomePage();
       viewNavButtons();
     } else if (loginCheck === `valid customer and valid password`) {
+      currentUser = "customer";
       const customerName = getCustomerName(
         dataAllCustomers,
         usernameInput.value
@@ -138,12 +162,15 @@ function login(e) {
 function customerViewBookings(e) {
   if (e.target.classList.contains("customer-view-bookings")) {
     displayCustomerBookingsPage();
+    updateCustomerSpending();
   }
 }
 
 function customerBookNewRoom(e) {
   if (e.target.classList.contains("customer-book-room")) {
-    displayCustomerBookNewRoomPage();
+    console.log(currentCustomer);
+    const customerName = currentCustomer.name;
+    displayCustomerBookNewRoomPage(customerName);
   }
 }
 
@@ -154,19 +181,71 @@ function customerAvailableRooms(e) {
     value.addEventListener("change", function () {
       const selectedDate = this.value;
       const formattedDate = selectedDate.replaceAll("-", "/");
+      customerDate = formattedDate;
       const availableRoomsArr = availableRooms(
-        formattedDate,
+        customerDate,
         dataAllRooms,
         dataAllBookings
       );
-      displayCustomerAvailableRooms(availableRoomsArr);
+      if (availableRoomsArr.length === 0) {
+        const message = document.querySelector(".customer-booking-message");
+        message.innerText = `Sorry, there are no available rooms for your selected dates`;
+      } else {
+        displayCustomerAvailableRooms(availableRoomsArr);
+      }
     });
   }
 }
 
+function filterByRoomType(e) {
+  if (e.target.id === "room-type") {
+    const bookingMessage = document.querySelector(".customer-booking-message");
+    const value = e.target.value;
+    const availableRoomsArr = availableRooms(
+      customerDate,
+      dataAllRooms,
+      dataAllBookings
+    );
+
+    if (value === "view-all") {
+      displayCustomerAvailableRooms(availableRoomsArr);
+    } else if (value === "suite") {
+      let filteredRooms = filterAvailRooms(availableRoomsArr, "suite");
+      displayCustomerAvailableRooms(filteredRooms);
+    } else if (value === "single-room") {
+      let filteredRooms = filterAvailRooms(availableRoomsArr, "single room");
+      displayCustomerAvailableRooms(filteredRooms);
+    } else if (value === "junior-suite") {
+      let filteredRooms = filterAvailRooms(availableRoomsArr, "junior suite");
+      displayCustomerAvailableRooms(filteredRooms);
+    } else if (value === "residential-suite") {
+      let filteredRooms = filterAvailRooms(
+        availableRoomsArr,
+        "residential suite"
+      );
+
+      displayCustomerAvailableRooms(filteredRooms);
+    }
+  }
+}
+
+// document.addEventListener("change", (event) => {
+//   if (event.target.classList.contains("currencies-dropdown")) {
+//     const selectedCurrencyId = event.target.value;
+//     const costSelected = returnRecipeCost(
+//       recipeData,
+//       ingredientsData,
+//       idClicked
+//     );
+//     const convertedCost = returnUpdatedCost(selectedCurrencyId, costSelected);
+//     modalCost.innerText = `Estimated Cost of Ingredients: ${convertedCost} ${selectedCurrencyId.toUpperCase()}`;
+//   }
+// });
+
 function customerViewAllBookings(e) {
   if (e.target.classList.contains("customer-all-bookings")) {
     const bookingsMessage = document.querySelector(".bookings-message");
+
     const allBookingsArr = customerBookingsAll(
       currentCustomer,
       dataAllBookings
@@ -226,7 +305,112 @@ function getCurrentDate() {
   return formattedDate;
 }
 
-// if (availableRoomsArr.length === 0) {
-//   const message = document.querySelector(".customer-booking-message");
-//   message.innerText = `Sorry, there are no available rooms for your selected dates`;
-// }
+function updateCustomerSpending() {
+  const totalSpentContainer = document.querySelector(".customer-total-spent");
+  const total = customerTotalCost(
+    currentCustomer,
+    dataAllBookings,
+    dataAllRooms
+  );
+
+  totalSpentContainer.innerText = `TOTAL SPENT: $${total}`;
+}
+
+function managerViewStats(e) {
+  if (e.target.classList.contains("date-input-manager")) {
+    const value = document.querySelector(".date-input-manager");
+    value.addEventListener("change", function () {
+      const selectedDate = this.value;
+      managerDate = selectedDate.replaceAll("-", "/");
+      todayPercentage = totalPercentOccupied(
+        managerDate,
+        dataAllBookings,
+        dataAllRooms
+      );
+    });
+  }
+
+  if (
+    e.target.classList.contains("manager-view-bookings") &&
+    managerDate !== null
+  ) {
+    displayManagerStatsPage();
+    updateManagerStats();
+    updateManagerRevenue();
+    updateManagerAvailRooms();
+  }
+}
+
+function updateManagerStats() {
+  const managerHeader = document.querySelector(".header-manager-stats");
+
+  const percentageCircle = document.querySelector(".occupied-percent");
+
+  percentageCircle.innerText = `${todayPercentage}`;
+  managerHeader.innerText = `MANAGER STATS - ${managerDate}`;
+
+  updatePercentage(todayPercentage / 100);
+}
+
+function updatePercentage(newPercentage) {
+  const circumference = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue(
+      "--circumference"
+    )
+  );
+  const dashLength = newPercentage * circumference;
+  const gapLength = (1 - newPercentage) * circumference;
+  document.documentElement.style.setProperty("--percent", newPercentage);
+  const elapsedPath = document.querySelector(".base-timer__path-elapsed1");
+  elapsedPath.style.strokeDasharray = `${dashLength}px ${gapLength}px`;
+}
+
+function updateManagerRevenue() {
+  const revenue = totalRevenueDay(managerDate, dataAllRooms, dataAllBookings);
+  displayManagerRevenue(revenue, managerDate);
+}
+function updateManagerAvailRooms() {
+  const availRooms = managerAvailableRoomsNum(
+    managerDate,
+    dataAllRooms,
+    dataAllBookings
+  );
+  displayManagerAvailRooms(availRooms, managerDate);
+  displayManagerAvailRoomCards(availRooms);
+}
+
+function managerViewCustomer(e) {
+  if (e.target.classList.contains("search-customer") && e.key === "Enter") {
+    const managerSearchMessageContainer = document.querySelector(
+      ".manager-customer-search-message"
+    );
+    const customerName = e.target.value;
+    const validCustomer = checkCustomerValid(dataAllCustomers, customerName);
+    if (validCustomer) {
+      currentCustomer = validCustomer;
+      displayManageCustomerPage();
+      const customerBookings = viewUserBookings(
+        customerName,
+        dataAllCustomers,
+        dataAllBookings
+      );
+      const customerSpending = viewUserBookingSpent(
+        customerBookings,
+        dataAllRooms
+      );
+      displayManagerCustomerStats(customerName, customerSpending);
+      displayManagerCustomerBookings(customerBookings);
+    } else {
+      managerSearchMessageContainer.innerText = `${customerName} is not found.`;
+      setTimeout(() => {
+        managerSearchMessageContainer.innerText = "";
+      }, 2500);
+    }
+  }
+}
+
+function managerBookRoomForCustomer(e) {
+  if (e.target.classList.contains("manager-add-bookings")) {
+    displayCustomerBookNewRoomPage(currentCustomer.name);
+  }
+}

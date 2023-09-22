@@ -8,11 +8,19 @@ $green: #274e13;
 $purple: #ab8dc8;
 $radius: 45px;
 $circumference: 2 * 3.14159 * $radius;
+:root {
+  --percent: 0.33;
+  --circumference: #{$circumference};
+}
 
 // MIXINS
-@mixin calculateStrokeDashArray($percentage) {
-  $dashLength: $circumference * $percentage;
-  $gapLength: $circumference - $dashLength;
+// @mixin calculateStrokeDashArray($percentage) {
+//   $dashLength: $circumference * $percentage;
+//   $gapLength: $circumference - $dashLength;
+//   stroke-dasharray: $dashLength $gapLength;
+// }
+
+@mixin calculateStrokeDashArray($dashLength, $gapLength) {
   stroke-dasharray: $dashLength $gapLength;
 }
 
@@ -160,7 +168,8 @@ button,
 //   background: transparent;
 //   cursor: pointer;
 // }
-.date-input {
+.date-input,
+.date-input-manager {
   height: 30px;
   width: 200px;
   font-size: 24px;
@@ -213,7 +222,7 @@ button,
 
 .base-timer__path-elapsed1 {
   stroke: $burnt-orange;
-  @include calculateStrokeDashArray(0.33);
+  @include calculateStrokeDashArray(0, 0);
   @include timer-stroke();
 }
 
