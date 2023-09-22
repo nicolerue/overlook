@@ -18,6 +18,7 @@ import {
   viewUserBookings,
   viewUserBookingsDate,
   viewUserBookingSpent,
+  getCustomerName,
 } from "../src/functions";
 
 describe("See if the tests are running", function () {
@@ -81,6 +82,8 @@ describe("return the total cost a customer has spent", function () {
 describe("Return available rooms based on a date", function () {
   it("should return an array of available rooms that match a given date", function () {
     const result = availableRooms("2022/04/22", rooms, bookings);
+    console.log("result", result);
+    console.log("rooms", rooms);
     expect(result.length).to.equal(3);
   });
 });
@@ -217,5 +220,16 @@ describe("View Total Amount the User has Spent", function () {
     ];
     const result = viewUserBookingSpent(bookingsArr, rooms);
     expect(result).to.equal(261.26);
+  });
+});
+
+describe("Get Customer Name", function () {
+  it("should return the customers name", function () {
+    const result = getCustomerName(customers, "customer2");
+    expect(result).to.equal(`ROCIO SCHUSTER`);
+  });
+  it("should return another customers name", function () {
+    const result = getCustomerName(customers, "customer1");
+    expect(result).to.equal(`LEATHA ULLRICH`);
   });
 });

@@ -66,16 +66,14 @@ $circumference: 2 * 3.14159 * $radius;
   stroke: none;
 }
 
-@mixin barwidth($height) {
-  height: #{$height}px;
-  width: 10px;
-  background-color: $main-color-dark;
-}
-
 @mixin hover-basic() {
   cursor: pointer;
   font-weight: bold;
   transform: scale(1.05);
+}
+
+.hidden {
+  display: none;
 }
 
 // ELEMENTS
@@ -91,7 +89,6 @@ nav {
 }
 
 .page-container {
-  height: 100vh;
   @include flex-column;
   @include align-justify-center();
   gap: 50px;
@@ -126,7 +123,8 @@ input[type="text"] {
   @include align-justify-center();
   gap: 30px;
 }
-button {
+button,
+.login-btn {
   padding: 10px 20px;
   border: none;
   border-radius: 15px;
@@ -150,18 +148,18 @@ button {
   gap: 20px;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: auto;
-  height: auto;
-  color: transparent;
-  background: transparent;
-  cursor: pointer;
-}
+// input[type="date"]::-webkit-calendar-picker-indicator {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   width: auto;
+//   height: auto;
+//   color: transparent;
+//   background: transparent;
+//   cursor: pointer;
+// }
 .date-input {
   height: 30px;
   width: 200px;
@@ -196,7 +194,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 24px;
 }
 
-/* Sets the containers height and width */
 .base-timer {
   position: relative;
   height: 250px;
@@ -209,32 +206,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   gap: 25px;
 }
 
-/* Removes SVG styling that would hide the time label */
 .base-timer__circle {
   @include timer-base();
   fill: rgb(245, 245, 245, 50%);
 }
 
-/* The SVG path that displays the timer's progress */
 .base-timer__path-elapsed1 {
   stroke: $burnt-orange;
   @include calculateStrokeDashArray(0.33);
   @include timer-stroke();
 }
 
-.base-timer__path-elapsed2 {
-  stroke: $green;
-  @include calculateStrokeDashArray(0.12);
-
-  @include timer-stroke();
-}
-
-.base-timer__path-elapsed3 {
-  stroke: $purple;
-
-  @include calculateStrokeDashArray(0.55);
-  @include timer-stroke();
-}
 .base-timer__label {
   @include timer-text();
   @include align-justify-center();
@@ -257,4 +239,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   @include flex-column();
   @include align-justify-center;
   gap: 30px;
+}
+
+.header-signin {
+  padding-top: 250px;
 }
