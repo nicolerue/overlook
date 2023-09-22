@@ -18,6 +18,22 @@ export function checkLogin(customersArr, username, password) {
   }
 }
 
+export function getCustomerName(customersArr, username) {
+  const usernameNum = username.slice(8, 10);
+  const validCustomer = customersArr.find((customerEl) => {
+    return customerEl.id == parseInt(usernameNum);
+  });
+  return validCustomer.name.toUpperCase();
+}
+
+export function getCustomerObject(customersArr, username) {
+  const usernameNum = username.slice(8, 10);
+  const validCustomer = customersArr.find((customerEl) => {
+    return customerEl.id == parseInt(usernameNum);
+  });
+  return validCustomer;
+}
+
 //CUSTOMER FUNCTIONS
 
 export function getCustomer(customersArray, id) {
@@ -27,12 +43,29 @@ export function getCustomer(customersArray, id) {
   return customer;
 }
 
+export function customerBookingsAll(customerObj, bookingsArray, date) {
+  const filteredBookings = bookingsArray
+    .filter((bookingEl) => {
+      if (bookingEl.userID === customerObj.id) {
+        return bookingEl;
+      }
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  if (filteredBookings.length >= 1) {
+    return filteredBookings;
+  } else {
+    return `It looks like you haven't made a booking!`;
+  }
+}
+
 export function customerBookingsUpcoming(customerObj, bookingsArray, date) {
-  const filteredBookings = bookingsArray.filter((bookingEl) => {
-    if (bookingEl.userID === customerObj.id && bookingEl.date > date) {
-      return bookingEl;
-    }
-  });
+  const filteredBookings = bookingsArray
+    .filter((bookingEl) => {
+      if (bookingEl.userID === customerObj.id && bookingEl.date > date) {
+        return bookingEl;
+      }
+    })
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
   if (filteredBookings.length >= 1) {
     return filteredBookings;
   } else {
@@ -41,11 +74,13 @@ export function customerBookingsUpcoming(customerObj, bookingsArray, date) {
 }
 
 export function customerBookingsPast(customerObj, bookingsArray, date) {
-  const filteredBookings = bookingsArray.filter((bookingEl) => {
-    if (bookingEl.userID === customerObj.id && bookingEl.date < date) {
-      return bookingEl;
-    }
-  });
+  const filteredBookings = bookingsArray
+    .filter((bookingEl) => {
+      if (bookingEl.userID === customerObj.id && bookingEl.date < date) {
+        return bookingEl;
+      }
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
   if (filteredBookings.length >= 1) {
     return filteredBookings;
   } else {
@@ -68,22 +103,16 @@ export function customerTotalCost(customerObj, bookingsArr, roomsArr) {
 }
 
 export function availableRooms(date, roomsArr, bookingsArr) {
-  const availRoomNums = bookingsArr
-    .filter((bookingEl) => {
-      return bookingEl.date !== date;
-    })
-    .map((roomNumObjEl) => {
-      return roomNumObjEl.roomNumber;
-    });
-  if (availRoomNums) {
-    return roomsArr.filter((roomEl) => {
-      const roomMatch = availRoomNums.find((roomNumEl) => {
-        return roomNumEl == roomEl.number;
-      });
-      return roomMatch;
-    });
+  const bookedRoomNumbers = bookingsArr
+    .filter((bookingEl) => bookingEl.date === date)
+    .map((bookingEl) => bookingEl.roomNumber);
+
+  if (bookedRoomNumbers.length === 0) {
+    return roomsArr;
   } else {
-    return `Sorry, there are no available rooms for your selected dates`;
+    return roomsArr.filter(
+      (roomEl) => !bookedRoomNumbers.includes(roomEl.number)
+    );
   }
 }
 
@@ -100,23 +129,16 @@ export function filterAvailRooms(availRoomsArr, roomType) {
 //MANAGER FUNCTIONS
 
 export function managerAvailableRoomsNum(date, roomsArr, bookingsArr) {
-  const availRoomNums = bookingsArr
-    .filter((bookingEl) => {
-      return bookingEl.date !== date;
-    })
-    .map((roomNumObjEl) => {
-      return roomNumObjEl.roomNumber;
-    });
-  if (availRoomNums) {
-    const availRoomsArr = roomsArr.filter((roomEl) => {
-      const roomMatch = availRoomNums.find((roomNumEl) => {
-        return roomNumEl == roomEl.number;
-      });
-      return roomMatch;
-    });
-    return availRoomsArr.length;
+  const bookedRoomNumbers = bookingsArr
+    .filter((bookingEl) => bookingEl.date === date)
+    .map((bookingEl) => bookingEl.roomNumber);
+
+  if (bookedRoomNumbers.length === 0) {
+    return roomsArr;
   } else {
-    return 0;
+    return roomsArr.filter(
+      (roomEl) => !bookedRoomNumbers.includes(roomEl.number)
+    ).length;
   }
 }
 
