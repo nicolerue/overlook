@@ -120,8 +120,8 @@ export function filterAvailRooms(availRoomsArr, roomType) {
   const filteredRooms = availRoomsArr.filter((availRoomsEl) => {
     return availRoomsEl.roomType === roomType;
   });
-  if (filteredRooms.length === 0) {
-    return `Sorry there are no available rooms with your selected room type`;
+  if (!filteredRooms) {
+    return [];
   }
   return filteredRooms;
 }
@@ -136,9 +136,10 @@ export function managerAvailableRoomsNum(date, roomsArr, bookingsArr) {
   if (bookedRoomNumbers.length === 0) {
     return roomsArr;
   } else {
-    return roomsArr.filter(
+    const availRooms = roomsArr.filter(
       (roomEl) => !bookedRoomNumbers.includes(roomEl.number)
-    ).length;
+    );
+    return availRooms;
   }
 }
 
@@ -180,11 +181,17 @@ export function totalPercentOccupied(date, bookingsArr, roomsArr) {
 
 export function viewUserBookings(customerName, customersArr, bookingsArr) {
   const customerID = customersArr.find((customerEl) => {
-    return customerEl.name === customerName;
+    return (
+      customerEl.name === customerName ||
+      customerEl.name.toLowerCase() === customerName ||
+      customerEl.name.toUpperCase() === customerName
+    );
   }).id;
-  const filteredBookings = bookingsArr.filter((bookingEl) => {
-    return bookingEl.userID === customerID;
-  });
+  const filteredBookings = bookingsArr
+    .filter((bookingEl) => {
+      return bookingEl.userID === customerID;
+    })
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
   return filteredBookings;
 }
 
@@ -208,6 +215,21 @@ export function viewUserBookingSpent(customerBookingsArr, roomsArr) {
     if (roomMatch) {
       acc += roomMatch.costPerNight;
     }
-    return acc;
+    return Math.round(acc);
   }, 0);
+}
+
+export function checkCustomerValid(customerArr, customerName) {
+  const validCustomer = customerArr.find((customerEl) => {
+    return (
+      customerEl.name === customerName ||
+      customerEl.name.toLowerCase() === customerName ||
+      customerEl.name.toUpperCase() === customerName
+    );
+  });
+  if (validCustomer) {
+    return validCustomer;
+  } else {
+    return undefined;
+  }
 }

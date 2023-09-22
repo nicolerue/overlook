@@ -19,6 +19,7 @@ import {
   viewUserBookingsDate,
   viewUserBookingSpent,
   getCustomerName,
+  checkCustomerValid,
 } from "../src/functions";
 
 describe("See if the tests are running", function () {
@@ -82,8 +83,6 @@ describe("return the total cost a customer has spent", function () {
 describe("Return available rooms based on a date", function () {
   it("should return an array of available rooms that match a given date", function () {
     const result = availableRooms("2022/04/22", rooms, bookings);
-    console.log("result", result);
-    console.log("rooms", rooms);
     expect(result.length).to.equal(3);
   });
 });
@@ -159,7 +158,7 @@ describe("Validate Login Credentials", function () {
 describe("Manager: Total Rooms available for selected date", function () {
   it("should return the number of available rooms for a given date", function () {
     const result = managerAvailableRoomsNum("2022/04/22", rooms, bookings);
-    expect(result).to.equal(3);
+    expect(result.length).to.equal(3);
   });
 });
 
@@ -231,5 +230,24 @@ describe("Get Customer Name", function () {
   it("should return another customers name", function () {
     const result = getCustomerName(customers, "customer1");
     expect(result).to.equal(`LEATHA ULLRICH`);
+  });
+});
+
+describe("Check Manager's search to see if the customer name is in the data set", function () {
+  it("should return a valid customer object with upper and lower case", function () {
+    const result = checkCustomerValid(customers, "Leatha Ullrich");
+    expect(result.id).to.equal(1);
+  });
+  it("should return a valid customer object with all lower case", function () {
+    const result = checkCustomerValid(customers, "leatha ullrich");
+    expect(result.id).to.equal(1);
+  });
+  it("should return a valid customer object with all upper case", function () {
+    const result = checkCustomerValid(customers, "LEATHA ULLRICH");
+    expect(result.id).to.equal(1);
+  });
+  it("should return undefined if no customers are found with that name", function () {
+    const result = checkCustomerValid(customers, "Harry Barry");
+    expect(result).to.equal(undefined);
   });
 });
