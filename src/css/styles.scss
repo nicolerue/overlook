@@ -94,6 +94,12 @@ nav {
   justify-content: space-between;
 }
 
+.home-btn,
+.signout-btn {
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .page-container {
   @include flex-column;
   @include align-justify-center();
@@ -110,14 +116,23 @@ h1 {
   gap: 20px;
 }
 
+p,
+h2,
+label {
+  font-weight: bold;
+}
+
 .input-login,
 .search-customer {
   height: 30px;
   width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
+  align-items: start;
 }
 
 input[type="text"] {
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .secondary-font {
@@ -154,6 +169,11 @@ button,
   gap: 20px;
 }
 
+.section-container-stats {
+  display: flex;
+  flex-direction: row;
+}
+
 // input[type="date"]::-webkit-calendar-picker-indicator {
 //   position: absolute;
 //   top: 0;
@@ -171,6 +191,8 @@ button,
   height: 30px;
   width: 200px;
   font-size: 24px;
+  padding-left: 10px;
+  padding-right: 10px;
   &:hover {
     @include hover-basic();
   }
@@ -182,7 +204,9 @@ button,
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 50px;
+  overflow: scroll;
   row-gap: 50px;
+  height: 50vh;
 }
 
 .room-card,
@@ -190,6 +214,7 @@ button,
   @include border-light();
   @include flex-column();
   @include align-justify-center;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .select-action-manager {
@@ -200,7 +225,7 @@ button,
 
 .search-label-input-container {
   @include align-justify-center();
-  font-size: 24px;
+  font-size: 18px;
 }
 
 .base-timer {
@@ -247,9 +272,35 @@ button,
 .circle-label-container {
   @include flex-column();
   @include align-justify-center;
-  gap: 30px;
+  gap: 15px;
 }
 
 .header-signin {
   padding-top: 250px;
+}
+
+.revenue-avail-container {
+  @include flex-column();
+  @include align-justify-center;
+  gap: 15px;
+}
+.bookings-container,
+.rooms-display .bookings-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 50px;
+  overflow: scroll;
+  row-gap: 50px;
+  height: 50vh;
+  align-items: start;
+}
+
+.rooms-display-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  overflow: scroll;
+  row-gap: 50px;
+  height: 35vh;
+  align-items: start;
 }

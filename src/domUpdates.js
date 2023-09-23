@@ -163,7 +163,7 @@ export function displayCustomerBookings(arrayOfRoomObjs) {
 export function displayManagerStatsPage() {
   const pageContainer = document.querySelector(".page-container");
   pageContainer.innerHTML = `<h1 class="header-manager-stats header">MANAGER STATS - 04/07/2022</h1>
-    <section class="section-container">
+    <section class="section-container section-container-stats">
       <div class="circle-label-container">
         <div class="base-timer">
           <svg
@@ -186,10 +186,12 @@ export function displayManagerStatsPage() {
         </div>
         <div class="percent-label">Percentage of Rooms Occupied for Selected Date</div>
       </div>
+      <div class="revenue-avail-container">
       <h2 class="manager-revenue">Today's Total Revenue: $1200</h2>
       <h2 class="avail-rooms">Today's Available Rooms: 14</h2>
+      </div>
     </section>
-    <section class="rooms-display">
+    <section class="rooms-display rooms-display-stats">
       <div class="room-card" id="1">
         <p>Room Number: 1</p>
         <p>Room Type: Residential Suite</p>
