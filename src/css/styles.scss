@@ -11,13 +11,6 @@ $circumference: 2 * 3.14159 * $radius;
   --circumference: #{$circumference};
 }
 
-// MIXINS
-// @mixin calculateStrokeDashArray($percentage) {
-//   $dashLength: $circumference * $percentage;
-//   $gapLength: $circumference - $dashLength;
-//   stroke-dasharray: $dashLength $gapLength;
-// }
-
 @mixin calculateStrokeDashArray($dashLength, $gapLength) {
   stroke-dasharray: $dashLength $gapLength;
 }
@@ -160,7 +153,7 @@ button,
 .section-container {
   @include flex-column;
   @include align-justify-center();
-  gap: 30px;
+  gap: 20px;
 }
 
 .bookings-container {
@@ -174,18 +167,6 @@ button,
   flex-direction: row;
 }
 
-// input[type="date"]::-webkit-calendar-picker-indicator {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   width: auto;
-//   height: auto;
-//   color: transparent;
-//   background: transparent;
-//   cursor: pointer;
-// }
 .date-input,
 .date-input-manager {
   height: 30px;
@@ -291,7 +272,7 @@ button,
   column-gap: 50px;
   overflow: scroll;
   row-gap: 50px;
-  height: 50vh;
+  height: 40vh;
   align-items: start;
 }
 
@@ -301,6 +282,6 @@ button,
   column-gap: 50px;
   overflow: scroll;
   row-gap: 50px;
-  height: 35vh;
+  height: 25vh;
   align-items: start;
 }

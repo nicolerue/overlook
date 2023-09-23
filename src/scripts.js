@@ -44,7 +44,6 @@ import {
   viewUserBookingSpent,
   filterAvailRooms,
   retrieveRoomObject,
-  retrieveBookingObject,
 } from "./functions";
 
 import "./images/hotel.jpg";
@@ -55,7 +54,6 @@ const signoutBtn = document.querySelector(".signout-btn");
 
 // GLOBAL VARIABLES
 let dataAllCustomers = null;
-let dataSingleCustomer = null;
 let dataAllRooms = null;
 let dataAllBookings = null;
 let currentCustomer = {};

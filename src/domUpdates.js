@@ -191,6 +191,7 @@ export function displayManagerStatsPage() {
       <h2 class="avail-rooms">Today's Available Rooms: 14</h2>
       </div>
     </section>
+    <h3>Available Rooms</h3>
     <section class="rooms-display rooms-display-stats">
       <div class="room-card" id="1">
         <p>Room Number: 1</p>
