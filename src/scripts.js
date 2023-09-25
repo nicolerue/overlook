@@ -44,10 +44,9 @@ import {
   viewUserBookingSpent,
   filterAvailRooms,
   retrieveRoomObject,
-  retrieveBookingObject,
 } from "./functions";
 
-import "./images/turing-logo.png";
+import "./images/hotel.jpg";
 
 //QUERY SELECTORS
 const homeBtn = document.querySelector(".home-btn");
@@ -55,7 +54,6 @@ const signoutBtn = document.querySelector(".signout-btn");
 
 // GLOBAL VARIABLES
 let dataAllCustomers = null;
-let dataSingleCustomer = null;
 let dataAllRooms = null;
 let dataAllBookings = null;
 let currentCustomer = {};
@@ -73,6 +71,16 @@ Promise.all([fetchAllCustomers, fetchAllRooms, fetchAllBookings]).then(
     dataAllBookings = fetchAllBookingsResult;
     displayLoginPage();
     removeNavButtons();
+
+    const pageContainer = document.querySelector("body");
+    pageContainer.style.backgroundImage = `linear-gradient(
+      rgba(249, 249, 249, 0.4),
+      rgba(249, 249, 249, 0.4)
+    ), url(./images/hotel.jpg)`;
+    pageContainer.style.backgroundSize = "cover";
+    pageContainer.style.height = "100vh";
+    pageContainer.style.overflow = "scroll";
+    pageContainer.style.backgroundRepeat = "no-repeat";
   }
 );
 
