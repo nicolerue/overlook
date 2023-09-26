@@ -44,6 +44,7 @@ import {
   viewUserBookingSpent,
   filterAvailRooms,
   retrieveRoomObject,
+  retrieveBookingObject,
 } from "./functions";
 
 import "./images/hotel.jpg";
@@ -55,13 +56,14 @@ const signoutBtn = document.querySelector(".signout-btn");
 // GLOBAL VARIABLES
 let dataAllCustomers = null;
 let dataAllRooms = null;
-let dataAllBookings = null;
+let dataAllBookings = [];
 let currentCustomer = {};
 let todayDate = getCurrentDate();
 let todayPercentage = null;
 let managerDate = null;
 let currentUser = null;
 let customerDate = null;
+
 // PAGE LOAD
 
 Promise.all([fetchAllCustomers, fetchAllRooms, fetchAllBookings]).then(
@@ -85,12 +87,12 @@ Promise.all([fetchAllCustomers, fetchAllRooms, fetchAllBookings]).then(
 );
 
 //EVENT LISTENERS
+homeBtn.addEventListener("click", navigateHome);
+signoutBtn.addEventListener("click", signout);
 window.addEventListener("click", login);
 window.addEventListener("click", customerViewBookings);
 window.addEventListener("click", customerBookNewRoom);
 window.addEventListener("click", customerAvailableRooms);
-homeBtn.addEventListener("click", navigateHome);
-signoutBtn.addEventListener("click", signout);
 window.addEventListener("click", customerViewAllBookings);
 window.addEventListener("click", customerViewPastBookings);
 window.addEventListener("click", customerViewFutureBookings);
@@ -175,7 +177,6 @@ function customerViewBookings(e) {
 
 function customerBookNewRoom(e) {
   if (e.target.classList.contains("customer-book-room")) {
-    console.log(currentCustomer);
     const customerName = currentCustomer.name;
     displayCustomerBookNewRoomPage(customerName);
   }
@@ -411,18 +412,35 @@ function managerBookRoomForCustomer(e) {
 }
 
 function customerBookRoom(e) {
-  if (e.target.classList.contains("book-btn")) {
+  if (
+    e.target.classList.contains("book-btn") &
+    (e.target.innerText === `Book This Room`)
+  ) {
     const room = retrieveRoomObject(dataAllRooms, e.target.id);
-    addNewBooking(room, currentCustomer, customerDate);
+    addNewBooking(room, currentCustomer, customerDate)
+      .then((updatedData) => {
+        dataAllBookings = updatedData.bookings;
+      })
+      .catch((err) => {
+        e.target.innerText === `Error adding a new booking:`;
+      });
     e.target.innerText = `✓ Booked`;
     e.target.style.backgroundColor = "#ce7e00";
     e.target.style.color = "#FFFFFF";
-
-    fetch(`http://localhost:3001/api/v1/bookings`)
-      .then((res) => res.json())
-      .then((data) => {
-        dataAllBookings = data.bookings;
-      });
+  } else if (
+    e.target.classList.contains("book-btn") &&
+    e.target.innerText === `✓ Booked`
+  ) {
+    e.target.innerText = `Book This Room`;
+    e.target.style.backgroundColor = "#d4d4d8";
+    e.target.style.color = "#262626";
+    const roomNum = e.target.id;
+    const roomToDeleteObj = retrieveBookingObject(
+      dataAllBookings,
+      customerDate,
+      roomNum
+    );
+    deleteBooking(roomToDeleteObj.id);
   }
 }
 

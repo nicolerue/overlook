@@ -254,7 +254,7 @@ describe("Check Manager's search to see if the customer name is in the data set"
 
 describe("Retrieve the object for a room based on an id", function () {
   it("should return a single room object for any given id", function () {
-    const result = retrieveRoomObject(rooms, "12");
+    const result = retrieveRoomObject(rooms, 12);
     expect(result).to.deep.equal({
       number: 12,
       roomType: "residential suite",
@@ -268,7 +268,7 @@ describe("Retrieve the object for a room based on an id", function () {
 
 describe("Retrieve a single bookings object", function () {
   it("should return a single booking object for a given date and room number", function () {
-    const result = retrieveBookingObject(bookings, "2022/04/22", 3);
+    const result = retrieveBookingObject(bookings, "2022/04/22", "3");
     expect(result.id).to.equal = "5fwrgu4i7k55hl6sz";
   });
 });
