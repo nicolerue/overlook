@@ -242,6 +242,9 @@ export function retrieveRoomObject(roomsArr, id) {
 
 export function retrieveBookingObject(bookingsArr, date, roomNum) {
   return bookingsArr.find((bookingEl) => {
-    return bookingEl.date === date && bookingEl.roomNumber === roomNum;
+    return (
+      bookingEl.date === date &&
+      parseInt(bookingEl.roomNumber) === parseInt(roomNum)
+    );
   });
 }
