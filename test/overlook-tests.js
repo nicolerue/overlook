@@ -18,6 +18,10 @@ import {
   viewUserBookings,
   viewUserBookingsDate,
   viewUserBookingSpent,
+  getCustomerName,
+  checkCustomerValid,
+  retrieveRoomObject,
+  retrieveBookingObject,
 } from "../src/functions";
 
 describe("See if the tests are running", function () {
@@ -74,7 +78,7 @@ describe("return the total cost a customer has spent", function () {
     const customerObj = { id: 9, name: "Nicole Rue" };
     const result = customerTotalCost(customerObj, bookings, rooms);
 
-    expect(result).to.equal(491.14);
+    expect(result).to.equal(491);
   });
 });
 
@@ -128,9 +132,7 @@ describe("Return available rooms based on the room type chosen by the customer",
       },
     ];
     const result = filterAvailRooms(availableRooms, "single room");
-    expect(result).to.equal(
-      `Sorry there are no available rooms with your selected room type`
-    );
+    expect(result).to.deep.equal([]);
   });
 });
 
@@ -156,7 +158,7 @@ describe("Validate Login Credentials", function () {
 describe("Manager: Total Rooms available for selected date", function () {
   it("should return the number of available rooms for a given date", function () {
     const result = managerAvailableRoomsNum("2022/04/22", rooms, bookings);
-    expect(result).to.equal(3);
+    expect(result.length).to.equal(3);
   });
 });
 
@@ -216,6 +218,57 @@ describe("View Total Amount the User has Spent", function () {
       },
     ];
     const result = viewUserBookingSpent(bookingsArr, rooms);
-    expect(result).to.equal(261.26);
+    expect(result).to.equal(261);
+  });
+});
+
+describe("Get Customer Name", function () {
+  it("should return the customers name", function () {
+    const result = getCustomerName(customers, "customer2");
+    expect(result).to.equal(`ROCIO SCHUSTER`);
+  });
+  it("should return another customers name", function () {
+    const result = getCustomerName(customers, "customer1");
+    expect(result).to.equal(`LEATHA ULLRICH`);
+  });
+});
+
+describe("Check Manager's search to see if the customer name is in the data set", function () {
+  it("should return a valid customer object with upper and lower case", function () {
+    const result = checkCustomerValid(customers, "Leatha Ullrich");
+    expect(result.id).to.equal(1);
+  });
+  it("should return a valid customer object with all lower case", function () {
+    const result = checkCustomerValid(customers, "leatha ullrich");
+    expect(result.id).to.equal(1);
+  });
+  it("should return a valid customer object with all upper case", function () {
+    const result = checkCustomerValid(customers, "LEATHA ULLRICH");
+    expect(result.id).to.equal(1);
+  });
+  it("should return undefined if no customers are found with that name", function () {
+    const result = checkCustomerValid(customers, "Harry Barry");
+    expect(result).to.equal(undefined);
+  });
+});
+
+describe("Retrieve the object for a room based on an id", function () {
+  it("should return a single room object for any given id", function () {
+    const result = retrieveRoomObject(rooms, 12);
+    expect(result).to.deep.equal({
+      number: 12,
+      roomType: "residential suite",
+      bidet: true,
+      bedSize: "queen",
+      numBeds: 1,
+      costPerNight: 358.4,
+    });
+  });
+});
+
+describe("Retrieve a single bookings object", function () {
+  it("should return a single booking object for a given date and room number", function () {
+    const result = retrieveBookingObject(bookings, "2022/04/22", "3");
+    expect(result.id).to.equal = "5fwrgu4i7k55hl6sz";
   });
 });
