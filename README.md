@@ -8,7 +8,7 @@
 ##### Testing Technologies:
   <img src="https://img.shields.io/badge/-mocha-%238D6748?style=for-the-badge&logo=mocha&logoColor=white" /> <img src="https://img.shields.io/badge/chai-A30701?style=for-the-badge&logo=chai&logoColor=white" />
 
-### [Deployed Link](https://https://nicolerue.github.io/overlook/)
+### [Deployed Link](https://nicolerue.github.io/overlook/)
 
 
 
