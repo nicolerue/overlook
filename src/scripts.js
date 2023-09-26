@@ -207,7 +207,6 @@ function customerAvailableRooms(e) {
 
 function filterByRoomType(e) {
   if (e.target.id === "room-type") {
-    const bookingMessage = document.querySelector(".customer-booking-message");
     const value = e.target.value;
     const availableRoomsArr = availableRooms(
       customerDate,
@@ -282,7 +281,7 @@ function customerViewFutureBookings(e) {
     );
 
     if (upcomingBookingsArr === `It looks like you haven't made a booking!`) {
-      bookingsMessage.innerText = pastBookingsArr;
+      bookingsMessage.innerText = upcomingBookingsArr;
     } else {
       displayCustomerBookings(upcomingBookingsArr);
       bookingsMessage.innerText = `${currentCustomer.name.toUpperCase()}'S UPCOMING BOOKINGS: SORTED CHRONOLOGICALLY, STARTING WITH THE CLOSEST UPCOMING DATES`;
@@ -422,7 +421,7 @@ function customerBookRoom(e) {
         dataAllBookings = updatedData.bookings;
       })
       .catch((err) => {
-        e.target.innerText === `Error adding a new booking:`;
+        e.target.innerText === `Error adding a new booking: ${err}`;
       });
     e.target.innerText = `✓ Booked`;
     e.target.style.backgroundColor = "#ce7e00";

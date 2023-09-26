@@ -1,12 +1,12 @@
 //LOGIN FUNCTION//
 
 export function checkLogin(customersArr, username, password) {
-  if (username == "manager" && password == "overlook2021") {
+  if (username === "manager" && password === "overlook2021") {
     return `valid manager login`;
   } else {
     const usernameNum = username.slice(8, 10);
     const validCustomer = customersArr.find((customerEl) => {
-      return customerEl.id == parseInt(usernameNum);
+      return customerEl.id === parseInt(usernameNum);
     });
     if (validCustomer && password === "overlook2021") {
       return `valid customer and valid password`;
@@ -21,7 +21,7 @@ export function checkLogin(customersArr, username, password) {
 export function getCustomerName(customersArr, username) {
   const usernameNum = username.slice(8, 10);
   const validCustomer = customersArr.find((customerEl) => {
-    return customerEl.id == parseInt(usernameNum);
+    return customerEl.id === parseInt(usernameNum);
   });
   return validCustomer.name.toUpperCase();
 }
@@ -29,7 +29,7 @@ export function getCustomerName(customersArr, username) {
 export function getCustomerObject(customersArr, username) {
   const usernameNum = username.slice(8, 10);
   const validCustomer = customersArr.find((customerEl) => {
-    return customerEl.id == parseInt(usernameNum);
+    return customerEl.id === parseInt(usernameNum);
   });
   return validCustomer;
 }
@@ -38,12 +38,12 @@ export function getCustomerObject(customersArr, username) {
 
 export function getCustomer(customersArray, id) {
   const customer = customersArray.find((customerEl) => {
-    return customerEl.id == id;
+    return customerEl.id === id;
   });
   return customer;
 }
 
-export function customerBookingsAll(customerObj, bookingsArray, date) {
+export function customerBookingsAll(customerObj, bookingsArray) {
   const filteredBookings = bookingsArray
     .filter((bookingEl) => {
       if (bookingEl.userID === customerObj.id) {
@@ -90,9 +90,9 @@ export function customerBookingsPast(customerObj, bookingsArray, date) {
 
 export function customerTotalCost(customerObj, bookingsArr, roomsArr) {
   return bookingsArr.reduce((acc, curr) => {
-    if (curr.userID == customerObj.id) {
+    if (curr.userID === customerObj.id) {
       const roomMatch = roomsArr.find((roomEl) => {
-        return roomEl.number == curr.roomNumber;
+        return roomEl.number === curr.roomNumber;
       });
       if (roomMatch) {
         acc += roomMatch.costPerNight;
@@ -209,7 +209,7 @@ export function viewUserBookingsDate(customerBookingsArr) {
 export function viewUserBookingSpent(customerBookingsArr, roomsArr) {
   return customerBookingsArr.reduce((acc, curr) => {
     const roomMatch = roomsArr.find((roomEl) => {
-      return curr.roomNumber == roomEl.number;
+      return curr.roomNumber === roomEl.number;
     });
 
     if (roomMatch) {
