@@ -24,6 +24,7 @@
   
 
 ## Preview of App:
+View on [GitHub Pages](https://nicolerue.github.io/overlook/)
 ![Screen Shot 2023-09-26 at 11 21 40 AM](https://github.com/nicolerue/overlook/assets/124186166/4c098feb-1e1d-4669-956a-bfab6235d8ec)
 ![Screen Shot 2023-09-26 at 11 22 43 AM](https://github.com/nicolerue/overlook/assets/124186166/bdc3518b-af97-42fd-add0-9fc61d1788a7)
 
@@ -41,6 +42,7 @@
 - Write DRY, reusable code that follows SRP (Single Responsibility Principle)
 
 ## Installation Instructions:
+View on [GitHub Pages](https://nicolerue.github.io/overlook/)
 This application requires access to both our backend server repository and front-end repository.
 
 ### Backend Server Setup:
