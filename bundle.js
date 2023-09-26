@@ -446,7 +446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   fetchAllCustomers: () => (/* binding */ fetchAllCustomers),
 /* harmony export */   fetchAllRooms: () => (/* binding */ fetchAllRooms)
 /* harmony export */ });
-const fetchAllCustomers = fetch("http://localhost:3001/api/v1/customers")
+const fetchAllCustomers = fetch("https://overlook-api-gk76.vercel.app/api/v1/customers")
   .then((res) => {
     if (!res.ok) {
       throw new Error(`Fetch failed with status: ${res.status}`);
@@ -461,7 +461,7 @@ const fetchAllCustomers = fetch("http://localhost:3001/api/v1/customers")
     throw error;
   });
 
-const fetchAllRooms = fetch(`http://localhost:3001/api/v1/rooms`)
+const fetchAllRooms = fetch(`https://overlook-api-gk76.vercel.app/api/v1/rooms`)
   .then((res) => {
     if (!res.ok) {
       throw new Error(`Fetch failed with status: ${res.status}`);
@@ -476,7 +476,7 @@ const fetchAllRooms = fetch(`http://localhost:3001/api/v1/rooms`)
     throw error;
   });
 
-const fetchAllBookings = fetch(`http://localhost:3001/api/v1/bookings`)
+const fetchAllBookings = fetch(`https://overlook-api-gk76.vercel.app/api/v1/bookings`)
   .then((res) => {
     if (!res.ok) {
       throw new Error(`Fetch failed with status: ${res.status}`);
@@ -492,7 +492,7 @@ const fetchAllBookings = fetch(`http://localhost:3001/api/v1/bookings`)
   });
 
 const addNewBooking = function (roomObj, userObj, selectedDate) {
-  return fetch("http://localhost:3001/api/v1/bookings", {
+  return fetch("https://overlook-api-gk76.vercel.app/api/v1/bookings", {
     method: "POST",
     body: JSON.stringify({
       userID: userObj.id,
@@ -521,7 +521,7 @@ const addNewBooking = function (roomObj, userObj, selectedDate) {
 };
 
 const deleteBooking = function (id) {
-  fetch(`http://localhost:3001/api/v1/bookings/${id}`, {
+  fetch(`https://overlook-api-gk76.vercel.app/api/v1/bookings/${id}`, {
     method: "DELETE",
   })
     .then((res) => res.json())
