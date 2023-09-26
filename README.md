@@ -12,7 +12,7 @@
 
   -----
 ## Highlights:
-- 0 Linter Error
+- 0 Linter Errors
 - Test Driven Development (Mocha and Chai)
 - Styled using SASS
 - Paradigm: Functional Programming
