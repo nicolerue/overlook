@@ -507,7 +507,7 @@ const addNewBooking = function (roomObj, userObj, selectedDate) {
     .then((data) => {
       console.log("Response from POST request:", data);
 
-      return fetch(`http://localhost:3001/api/v1/bookings`)
+      return fetch(`https://overlook-api-gk76.vercel.app/api/v1/bookings`)
         .then((res) => res.json())
         .then((updatedData) => {
           console.log("Updated data after adding a new booking:", updatedData);
