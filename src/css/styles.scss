@@ -1,11 +1,287 @@
-h1 {
-  color: red;
+//VARIABLES
 
+$main-font: "Inter", sans-serif;
+$main-color-dark: #262626;
+$main-color-light: #d4d4d8;
+$burnt-orange: #ce7e00;
+$radius: 45px;
+$circumference: 2 * 3.14159 * $radius;
+:root {
+  --percent: 0.33;
+  --circumference: #{$circumference};
+}
+
+@mixin calculateStrokeDashArray($dashLength, $gapLength) {
+  stroke-dasharray: $dashLength $gapLength;
+}
+
+@mixin style-main-font-dark() {
+  color: $main-color-dark;
+  font-family: $main-font;
+}
+
+@mixin style-main-font-light() {
+  color: $main-color-light;
+  font-family: $main-font;
+}
+
+@mixin flex-column() {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin align-justify-center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin border-light() {
+  border: 1px solid $main-color-light;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+@mixin timer-text() {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+}
+
+@mixin timer-stroke() {
+  stroke-width: 7px;
+  stroke-linecap: round;
+}
+
+@mixin timer-base() {
+  fill: none;
+  stroke: none;
+}
+
+@mixin hover-basic() {
+  cursor: pointer;
+  font-weight: bold;
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none;
+}
+
+// ELEMENTS
+* {
+  margin: 0;
+  padding: 0;
+  font-family: $main-font;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-btn,
+.signout-btn {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.page-container {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 50px;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+.home-login {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 20px;
+}
+
+p,
+h2,
+label {
+  font-weight: bold;
+}
+
+.input-login,
+.search-customer {
+  height: 30px;
+  width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
+  align-items: start;
+}
+
+input[type="text"] {
+  font-size: 18px;
+}
+
+.secondary-font {
+  font-size: 32px;
+}
+
+.select-action {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 30px;
+}
+button,
+.login-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  background-color: $main-color-light;
+  color: $main-color-dark;
+  margin: 20px 20px;
   &:hover {
-    color: blue;
+    @include hover-basic();
   }
 }
 
-body {
-  background-color: red;
+.section-container {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 20px;
+}
+
+.bookings-container {
+  @include flex-column;
+  @include align-justify-center();
+  gap: 20px;
+}
+
+.section-container-stats {
+  display: flex;
+  flex-direction: row;
+}
+
+.date-input,
+.date-input-manager {
+  height: 30px;
+  width: 200px;
+  font-size: 24px;
+  padding-left: 10px;
+  padding-right: 10px;
+  &:hover {
+    @include hover-basic();
+  }
+  cursor: pointer;
+}
+
+.rooms-display,
+.bookings-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  overflow: scroll;
+  row-gap: 50px;
+  height: 50vh;
+}
+
+.room-card,
+.booking-card {
+  @include border-light();
+  @include flex-column();
+  @include align-justify-center;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.select-action-manager {
+  @include flex-column();
+  @include align-justify-center();
+  gap: 30px;
+}
+
+.search-label-input-container {
+  @include align-justify-center();
+  font-size: 18px;
+}
+
+.base-timer {
+  position: relative;
+  height: 250px;
+  width: 250px;
+}
+
+.timer-label-container {
+  @include flex-column();
+  @include align-justify-center();
+  gap: 25px;
+}
+
+.base-timer__circle {
+  @include timer-base();
+  fill: rgb(245, 245, 245, 50%);
+}
+
+.base-timer__path-elapsed1 {
+  stroke: $burnt-orange;
+  @include calculateStrokeDashArray(0, 0);
+  @include timer-stroke();
+}
+
+.base-timer__label {
+  @include timer-text();
+  @include align-justify-center();
+  @include flex-column();
+}
+
+.occupied-percent {
+  font-size: 42px;
+}
+
+.percent-label {
+  display: flex;
+  background-color: $main-color-light;
+  color: $main-color-dark;
+  padding: 10px 20px;
+  border-radius: 15px;
+}
+
+.circle-label-container {
+  @include flex-column();
+  @include align-justify-center;
+  gap: 15px;
+}
+
+.header-signin {
+  padding-top: 250px;
+}
+
+.revenue-avail-container {
+  @include flex-column();
+  @include align-justify-center;
+  gap: 15px;
+}
+.bookings-container,
+.rooms-display .bookings-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 50px;
+  overflow: scroll;
+  row-gap: 50px;
+  height: 40vh;
+  align-items: start;
+}
+
+.rooms-display-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  overflow: scroll;
+  row-gap: 50px;
+  height: 25vh;
+  align-items: start;
 }
