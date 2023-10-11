@@ -14,8 +14,7 @@
 </div>
 
   -----
-## Highlights:
-- 0 Linter Errors
+## Overlook:
 - Test Driven Development (Mocha and Chai)
 - Styled using SASS
 - Paradigm: Functional Programming
